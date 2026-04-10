@@ -4,7 +4,7 @@
 
 每个数据中心是一个**完整独立的 Redis Cluster**，对外提供完整服务。中心间不共享节点，通过专门的**跨中心同步层**传播数据变更。
 
-![Redis 多数据中心（Multi-datacenter）架构设计](assets/img/redis_multi_datacenter_cluster.svg "Redis 多数据中心（Multi-datacenter）架构设计")
+![Redis 多数据中心（Multi-datacenter）架构设计](../assets/img/redis_multi_datacenter_cluster.svg "Redis 多数据中心（Multi-datacenter）架构设计")
 
 ---
 
