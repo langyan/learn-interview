@@ -1,7 +1,6 @@
 我来设计一个完整的 DB + Elasticsearch 双写架构，并配套 Java 实现。先看整体架构图，然后逐层展开。架构分为 **写路径**（DB 事务 + MQ 解耦）和 **查询路径**（ES 承担全文检索），通过 Sync Consumer 异步同步，CDC 作为备选方案。下面是分层的 Java 实现代码。
 
-![双写架构](../assets/img/db_es_architecture_overview.svg "双写架构)
-
+![双写架构](../assets/img/db_es_architecture_overview.svg "双写架构")
 ---
 
 ## 1. 核心依赖 (`pom.xml`)
