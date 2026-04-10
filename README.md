@@ -18,7 +18,9 @@
 
 ### Kafka
 
+- [简述Kafka架构设计](./kafka/简述Kafka架构设计.md)
 - [Kafka为什么这么快](./kafka/Kafka为什么这么快.md)
+
 
 ### Elasticsearch
 
