@@ -15,6 +15,13 @@
 - [Redis多中心集群架构](./redis/Redis多中心集群架构.md)
 - [redis分布式锁丢失问题](./redis/redis分布式锁丢失问题.md)
 
+
+### Kafka
+
+- [Kafka为什么这么快](./kafka/Kafka为什么这么快.md)
+
 ### Elasticsearch
 
 - [DB+Elasticsearch 双写架构](./elasticsearch/DB+Elasticsearch%20双写架构.md)
+
+
