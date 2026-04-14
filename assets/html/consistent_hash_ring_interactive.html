@@ -1,0 +1,174 @@
+<h2 class="sr-only">一致性哈希环交互演示：channel_id 如何路由到 Channel Server</h2>
+<style>
+  #ring-wrap { display:flex; gap:24px; align-items:flex-start; padding:1rem 0; flex-wrap:wrap; }
+  #ring-canvas { flex:0 0 320px; height:320px; }
+  #ring-panel { flex:1; min-width:220px; }
+  .cs-tag { display:inline-flex; align-items:center; gap:6px; padding:4px 10px; border-radius:var(--border-radius-md); border:0.5px solid var(--color-border-tertiary); font-size:12px; margin:3px 2px; cursor:pointer; background:var(--color-background-secondary); color:var(--color-text-primary); }
+  .cs-tag.active { background:var(--color-background-info); border-color:var(--color-border-info); color:var(--color-text-info); }
+  .cs-dot { width:8px;height:8px;border-radius:50%; }
+  #result-box { margin-top:12px; padding:10px 14px; border-radius:var(--border-radius-md); border:0.5px solid var(--color-border-tertiary); font-size:13px; background:var(--color-background-secondary); color:var(--color-text-secondary); min-height:44px; }
+  #result-box.hit { border-color:var(--color-border-success); background:var(--color-background-success); color:var(--color-text-success); }
+  #channel-input { width:100%; box-sizing:border-box; margin-bottom:8px; }
+  .label-row { font-size:12px; color:var(--color-text-secondary); margin:8px 0 4px; }
+  #event-log { font-size:12px; color:var(--color-text-secondary); margin-top:12px; max-height:90px; overflow-y:auto; }
+  .log-line { padding:2px 0; border-bottom:0.5px solid var(--color-border-tertiary); }
+  .crashed { text-decoration:line-through; opacity:0.45; }
+</style>
+
+<div id="ring-wrap">
+  <canvas id="ring-canvas" width="320" height="320"></canvas>
+  <div id="ring-panel">
+    <div class="label-row">输入 channel_id 查询路由目标</div>
+    <input id="channel-input" type="text" placeholder="例如: general, random, dev-alerts" value="general">
+    <button onclick="lookup()" style="width:100%">查询路由 →</button>
+
+    <div class="label-row">Channel Servers（点击模拟宕机）</div>
+    <div id="cs-list"></div>
+
+    <div id="result-box">输入 channel_id 后点击查询</div>
+
+    <div class="label-row">操作日志</div>
+    <div id="event-log"></div>
+  </div>
+</div>
+
+<script>
+const CS_COLORS = ['#185FA5','#0F6E56','#854F0B','#993C1D','#534AB7'];
+const CS_FILL   = ['#E6F1FB','#E1F5EE','#FAEEDA','#FAECE7','#EEEDFE'];
+
+const servers = [
+  {id:'CS-1', angle:30},
+  {id:'CS-2', angle:102},
+  {id:'CS-3', angle:195},
+  {id:'CS-4', angle:268},
+  {id:'CS-5', angle:345},
+].map((s,i)=>({...s, color:CS_COLORS[i], fill:CS_FILL[i], crashed:false}));
+
+let lastChannel = null;
+let lastAngle = null;
+const log = [];
+
+function hashToAngle(str) {
+  let h = 5381;
+  for(let i=0;i<str.length;i++) h = ((h<<5)+h) ^ str.charCodeAt(i);
+  return ((h >>> 0) % 360);
+}
+
+function findServer(angle) {
+  const alive = servers.filter(s=>!s.crashed);
+  if(!alive.length) return null;
+  let best = null, bestDist = 999;
+  for(const s of alive) {
+    let d = (s.angle - angle + 360) % 360;
+    if(d < bestDist) { bestDist=d; best=s; }
+  }
+  return best;
+}
+
+const cvs = document.getElementById('ring-canvas');
+const ctx = cvs.getContext('2d');
+const CX=160, CY=160, R=118, NODE_R=18;
+
+function degToRad(d){ return d*Math.PI/180; }
+function ptOnRing(a, r){ return [CX+r*Math.cos(degToRad(a-90)), CY+r*Math.sin(degToRad(a-90))]; }
+
+function draw() {
+  ctx.clearRect(0,0,320,320);
+  const dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const ringColor = dark ? 'rgba(180,178,169,0.18)' : 'rgba(136,135,128,0.18)';
+  const textColor = dark ? '#c2c0b6' : '#3d3d3a';
+  const mutedColor= dark ? '#888780' : '#888780';
+
+  ctx.beginPath(); ctx.arc(CX,CY,R,0,2*Math.PI);
+  ctx.strokeStyle=ringColor; ctx.lineWidth=1.5; ctx.stroke();
+
+  if(lastAngle!==null) {
+    const target = findServer(lastAngle);
+    if(target) {
+      const [px,py] = ptOnRing(lastAngle, 0);
+      const [tx,ty] = ptOnRing(target.angle, R-NODE_R-2);
+      ctx.save();
+      ctx.strokeStyle = target.color;
+      ctx.lineWidth = 1.5;
+      ctx.setLineDash([4,3]);
+      ctx.beginPath(); ctx.moveTo(px,py);
+      let mid = (lastAngle+target.angle)/2;
+      let [mx,my] = ptOnRing(mid, R*0.55);
+      ctx.quadraticCurveTo(mx,my,tx,ty);
+      ctx.stroke(); ctx.restore();
+    }
+  }
+
+  for(const s of servers) {
+    const [x,y] = ptOnRing(s.angle, R);
+    ctx.beginPath(); ctx.arc(x,y,NODE_R,0,2*Math.PI);
+    ctx.fillStyle = s.crashed ? (dark?'#444441':'#D3D1C7') : s.fill;
+    ctx.strokeStyle = s.crashed ? (dark?'#5F5E5A':'#B4B2A9') : s.color;
+    ctx.lineWidth = s===findServer(lastAngle??-1) && !s.crashed ? 2.5 : 0.5;
+    ctx.fill(); ctx.stroke();
+    ctx.fillStyle = s.crashed ? mutedColor : (dark?'#c2c0b6':s.color);
+    ctx.font = `${s===findServer(lastAngle??-1)?'500':'400'} 11px sans-serif`;
+    ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.fillText(s.id, x, y);
+  }
+
+  if(lastAngle!==null && lastChannel) {
+    const [px,py] = ptOnRing(lastAngle,R);
+    ctx.beginPath(); ctx.arc(px,py,7,0,2*Math.PI);
+    ctx.fillStyle='#D85A30'; ctx.fill();
+    ctx.fillStyle=textColor; ctx.font='11px sans-serif';
+    ctx.textAlign='center'; ctx.textBaseline='middle';
+    const [lx,ly] = ptOnRing(lastAngle, R+32);
+    ctx.fillText('#'+lastChannel, lx, ly);
+  }
+
+  ctx.fillStyle = mutedColor;
+  ctx.font='10px sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.fillText('0°', CX, CY-R-10);
+  ctx.fillText('360°', CX, CY-R-22);
+}
+
+function renderCSList() {
+  const el = document.getElementById('cs-list');
+  el.innerHTML = servers.map(s=>`
+    <span class="cs-tag${s===findServer(lastAngle??-1)&&!s.crashed?' active':''}" onclick="toggleCrash('${s.id}')">
+      <span class="cs-dot" style="background:${s.crashed?'#B4B2A9':s.color}"></span>
+      <span class="${s.crashed?'crashed':''}">${s.id} (${s.angle}°)</span>
+      ${s.crashed?'<span style="color:var(--color-text-danger);font-size:10px">宕机</span>':''}
+    </span>`).join('');
+}
+
+function toggleCrash(id) {
+  const s = servers.find(x=>x.id===id);
+  s.crashed = !s.crashed;
+  addLog(s.crashed ? `${id} 模拟宕机，CHARM 开始替换...` : `${id} 已恢复上线`);
+  if(lastChannel) lookup(true);
+  else { draw(); renderCSList(); }
+}
+
+function lookup(silent=false) {
+  const ch = document.getElementById('channel-input').value.trim();
+  if(!ch) return;
+  lastChannel = ch;
+  lastAngle = hashToAngle(ch);
+  const target = findServer(lastAngle);
+  const box = document.getElementById('result-box');
+  if(!target) {
+    box.className=''; box.textContent='全部 CS 宕机，无法路由！';
+  } else {
+    box.className='hit';
+    box.innerHTML=`<span style="font-weight:500">#${ch}</span> → hash=${lastAngle}° → <span style="font-weight:500;color:${target.color}">${target.id}</span>（顺时针最近节点）`;
+    if(!silent) addLog(`#${ch} hash至${lastAngle}°，路由到 ${target.id}`);
+  }
+  draw(); renderCSList();
+}
+
+function addLog(msg) {
+  log.unshift(msg);
+  if(log.length>8) log.pop();
+  document.getElementById('event-log').innerHTML = log.map(l=>`<div class="log-line">${l}</div>`).join('');
+}
+
+document.getElementById('channel-input').addEventListener('keydown',e=>{if(e.key==='Enter')lookup();});
+draw(); renderCSList(); lookup(true);
+</script>

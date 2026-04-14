@@ -13,7 +13,7 @@
 
 ### Linux
 
-- [Linux 最大连接数限制](./linux/Linux 最大连接数限制.md)
+- [Linux 最大连接数限制](./linux/Linux%20最大连接数限制.md)
 
 
 ### Redis
