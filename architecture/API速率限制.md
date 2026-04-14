@@ -102,6 +102,9 @@
 - 需要跟踪上次补充时间
 - 爆发大小需要仔细调整
 
+
+![算法](../assets/img/api-rate-limiting-algorithms.webp "算法")
+
 ---
 
 ## 算法1：固定窗口计数器
@@ -430,6 +433,8 @@ public class SlidingWindowCounterRateLimiter {
     }
 }
 ```
+
+![滑动窗口计数器](../assets/img/api-rate-limiting-sliding-window.webp "滑动窗口计数器")
 
 ---
 

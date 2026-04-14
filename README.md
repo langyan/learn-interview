@@ -10,7 +10,7 @@
 - [百万级请求架构设计方案](./architecture/百万级请求架构设计方案.md)
 - [URL缩短器设计](./architecture/URL缩短器设计.md)
 - [Slack 实时消息系统](./architecture/Slack%20实时消息系统.md)
-- [API速率限制](./architecture/Slack%20实时消息系统.md)
+- [API速率限制](./architecture/API速率限制.md)
 
 ### Linux
 
