@@ -9,6 +9,12 @@
 - [城市六边形区域动态定价系统](./architecture/城市六边形区域动态定价系统.md)
 - [百万级请求架构设计方案](./architecture/百万级请求架构设计方案.md)
 - [URL缩短器设计](./architecture/URL缩短器设计.md)
+- [Slack 实时消息系统](./architecture/Slack 实时消息系统.md)
+
+### Linux
+
+- [Linux 最大连接数限制](./linux/URL缩短器设计.md)
+
 
 ### Redis
 
