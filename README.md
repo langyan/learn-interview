@@ -11,6 +11,7 @@
 - [URL缩短器设计](./architecture/URL缩短器设计.md)
 - [Slack 实时消息系统](./architecture/Slack%20实时消息系统.md)
 - [API速率限制](./architecture/API速率限制.md)
+- [Outbox模式解决数据一致性问题](./architecture/Outbox模式解决数据一致性问题.md)
 
 ### Linux
 
