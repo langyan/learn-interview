@@ -23,6 +23,7 @@
 - [Redis多中心集群架构](./redis/Redis多中心集群架构.md)
 - [redis分布式锁丢失问题](./redis/redis分布式锁丢失问题.md)
 - [Redis缓存穿透击穿雪崩解决方案](./redis/Redis缓存穿透击穿雪崩解决方案.md)
+- [Redis中查找特定前缀的密钥](./redis/Redis中查找特定前缀的密钥.md)
 
 
 ### Kafka
