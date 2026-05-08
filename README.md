@@ -44,7 +44,7 @@
 ### Java
 
 - [Java线上问题排查指南](./java/Java线上问题排查指南.md)
-- [Spring Boot生产错误整理](./java/Spring%20Boot生产错误整理.md)
+
 
 
 ### Spring
@@ -52,6 +52,8 @@
 - [将单体应用迁移到微服务.md](./spring/将单体应用迁移到微服务.md)
 - [多因子认证与安全令.md](./spring/多因子认证与安全令.md)
 - [Spring读操作的事务注解选择.md](./spring/Spring读操作的事务注解选择.md)
+- [Spring Boot生产错误整理](./spring/Spring%20Boot生产错误整理.md)
+- [Spring Boot API的指标监控](./spring/Spring%20Boot%20API的指标监控.md)
 
 
 
