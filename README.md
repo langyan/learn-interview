@@ -9,6 +9,7 @@
 - [城市六边形区域动态定价系统](./architecture/城市六边形区域动态定价系统.md)
 - [百万级请求架构设计方案](./architecture/百万级请求架构设计方案.md)
 - [URL缩短器设计](./architecture/URL缩短器设计.md)
+- [高流量短网址系统设计](./architecture/高流量短网址系统设计.md)
 - [Slack 实时消息系统](./architecture/Slack%20实时消息系统.md)
 - [API速率限制](./architecture/API速率限制.md)
 - [Outbox模式解决数据一致性问题](./architecture/Outbox模式解决数据一致性问题.md)
