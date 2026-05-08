@@ -14,6 +14,7 @@
 - [API速率限制](./architecture/API速率限制.md)
 - [Outbox模式解决数据一致性问题](./architecture/Outbox模式解决数据一致性问题.md)
 - [事件驱动订单处理系统](./architecture/事件驱动订单处理系统.md)
+- [Netflix架构原则整理](./architecture/Netflix架构原则整理.md)
 
 ### Linux
 
