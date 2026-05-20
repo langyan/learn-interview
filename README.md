@@ -55,6 +55,7 @@
 - [Spring读操作的事务注解选择.md](./spring/Spring读操作的事务注解选择.md)
 - [Spring Boot生产错误整理](./spring/Spring%20Boot生产错误整理.md)
 - [Spring Boot API的指标监控](./spring/Spring%20Boot%20API的指标监控.md)
+- [HikariCP CPU问题](./spring/HikariCP%20CPU问题.md)
 
 
 
