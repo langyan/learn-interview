@@ -45,6 +45,8 @@
 ### Java
 
 - [Java线上问题排查指南](./java/Java线上问题排查指南.md)
+- [高性能本地持久化队列实现](./java/高性能本地持久化队列实现.md)
+- [DnsResolver以实现 DNS Rebinding防护](./java/DnsResolver以实现%20DNS%20Rebinding防护.md)
 
 
 
