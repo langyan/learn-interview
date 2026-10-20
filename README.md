@@ -16,10 +16,17 @@
 - [事务性外箱模式](./architecture/事务性外箱模式.md)
 - [事件驱动订单处理系统](./architecture/事件驱动订单处理系统.md)
 - [Netflix架构原则整理](./architecture/Netflix架构原则整理.md)
+- [API 幂等性完整设计方案](./architecture/API%20幂等性完整设计方案.md)
+- [全链路连接上限与配置总表](./architecture/全链路连接上限与配置总表.md)
 
 ### Linux
 
 - [Linux 最大连接数限制](./linux/Linux%20最大连接数限制.md)
+
+
+### DB
+
+- [如何给 10 亿级订单表安全加字段(MySQL)](./db/如何给%2010%20亿级订单表安全加字段(MySQL).md)
 
 
 ### Redis
@@ -48,6 +55,7 @@
 - [Java线上问题排查指南](./java/Java线上问题排查指南.md)
 - [高性能本地持久化队列实现](./java/高性能本地持久化队列实现.md)
 - [DnsResolver以实现 DNS Rebinding防护](./java/DnsResolver以实现%20DNS%20Rebinding防护.md)
+- [10个虚拟线程反模式](./java/10个虚拟线程反模式.md)
 
 
 
@@ -59,6 +67,7 @@
 - [Spring Boot生产错误整理](./spring/Spring%20Boot生产错误整理.md)
 - [Spring Boot API的指标监控](./spring/Spring%20Boot%20API的指标监控.md)
 - [HikariCP CPU问题](./spring/HikariCP%20CPU问题.md)
+
 
 
 
